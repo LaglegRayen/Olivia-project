@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clients - OLIVIA</title>
+    <title>Clients - ISOLAB Agri Support</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -12,13 +12,15 @@
         <!-- Sidebar Navigation -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <h2 class="sidebar-title">OLIVIA</h2>
+                <h2 class="sidebar-title">ISOLAB Agri Support</h2>
                 <p class="sidebar-subtitle">Système de gestion</p>
             </div>
             <ul class="sidebar-nav">
                 <li><a href="dashboard.html" id="nav-dashboard"><i class="fas fa-home"></i> Tableau de bord</a></li>
                 <li><a href="voir-machines.html" id="nav-machines"><i class="fas fa-cogs"></i> Voir les machines</a></li>
                 <li><a href="clients.html" id="nav-clients" class="active"><i class="fas fa-users"></i> Clients</a></li>
+                <li><a href="ajouter-client.html" id="nav-add-client"><i class="fas fa-user-plus"></i> Ajouter Client</a></li>
+                <li><a href="ajouter-machine.html" id="nav-add-machine"><i class="fas fa-plus-circle"></i> Ajouter Machine</a></li>
                 <li><a href="../index.html" id="nav-logout"><i class="fas fa-sign-out-alt"></i> Déconnexion</a></li>
             </ul>
         </div>
@@ -38,8 +40,8 @@
                     <button class="btn btn-primary search-btn" onclick="searchClients()">
                         <i class="fas fa-search"></i> Rechercher
                     </button>
-                    <button class="btn btn-secondary" onclick="showAddClientModal()">
-                        <i class="fas fa-plus"></i> Nouveau Client
+                    <button class="btn btn-success" onclick="window.location.href='ajouter-client.html'">
+                        <i class="fas fa-user-plus"></i> Ajouter un Client
                     </button>
                 </div>
                 

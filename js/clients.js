@@ -24,8 +24,11 @@ function checkAuthentication() {
 let allClients = [];
 
 function loadClientsData() {
-    // Simulate loading data from CSV files
-    allClients = [
+    // Load existing clients from localStorage first
+    const savedClients = JSON.parse(localStorage.getItem('oliviaClients') || '[]');
+    
+    // Default clients data (from CSV files)
+    const defaultClients = [
         {
             id: 1,
             society: 'BTK lease plc sté Boujelbene de prod.huile dolive',
@@ -157,6 +160,27 @@ function loadClientsData() {
             machines: ['91935614']
         }
     ];
+    
+    // If there are saved clients, merge them with default clients
+    if (savedClients.length > 0) {
+        // Combine saved clients with default clients, avoid duplicates
+        const combinedClients = [...defaultClients];
+        
+        savedClients.forEach(savedClient => {
+            // Check if client already exists (by fiscal number)
+            const exists = combinedClients.some(client => 
+                client.fiscalNumber === savedClient.fiscalNumber
+            );
+            
+            if (!exists) {
+                combinedClients.push(savedClient);
+            }
+        });
+        
+        allClients = combinedClients;
+    } else {
+        allClients = defaultClients;
+    }
     
     displayClients(allClients);
     updateClientCount(allClients.length);
