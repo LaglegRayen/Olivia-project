@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 // Add Machine page functionality
+=======
+// Add Machine page functionality - Simplified
+>>>>>>> master
 document.addEventListener('DOMContentLoaded', function() {
     // Check authentication
     checkAuthentication();
@@ -6,11 +10,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize form
     initializeForm();
     
+<<<<<<< HEAD
     // Initialize client search
     initializeClientSearch();
     
     // Add form validation
     addFormValidation();
+=======
+    // Load clients for selection
+    loadClients();
+>>>>>>> master
 });
 
 function checkAuthentication() {
@@ -21,7 +30,10 @@ function checkAuthentication() {
     }
 }
 
+<<<<<<< HEAD
 let selectedClient = null;
+=======
+>>>>>>> master
 let allClients = [];
 
 function initializeForm() {
@@ -33,16 +45,23 @@ function initializeForm() {
         handleFormSubmission();
     });
     
+<<<<<<< HEAD
     // Add input event listeners for real-time validation
     const requiredFields = form.querySelectorAll('input[required], select[required]');
     requiredFields.forEach(field => {
         field.addEventListener('input', function() {
             validateField(this);
         });
+=======
+    // Add basic validation
+    const requiredFields = form.querySelectorAll('input[required], select[required]');
+    requiredFields.forEach(field => {
+>>>>>>> master
         field.addEventListener('blur', function() {
             validateField(this);
         });
     });
+<<<<<<< HEAD
     
     // Auto-calculate TTC when HT changes
     document.getElementById('prixHT').addEventListener('input', function() {
@@ -60,22 +79,54 @@ function initializeClientSearch() {
     // Add search functionality
     clientSearchInput.addEventListener('input', function() {
         const searchTerm = this.value.trim().toLowerCase();
+=======
+}
+
+async function loadClients() {
+    try {
+        const response = await fetch('/api/clients');
+        if (response.ok) {
+            const result = await response.json();
+            allClients = result.data || [];
+            setupClientSearch();
+        }
+    } catch (error) {
+        console.error('Error loading clients:', error);
+    }
+}
+
+function setupClientSearch() {
+    const clientSearch = document.getElementById('clientSearch');
+    const searchResults = document.getElementById('clientSearchResults');
+    
+    if (!clientSearch || !searchResults) return;
+    
+    clientSearch.addEventListener('input', function() {
+        const searchTerm = this.value.toLowerCase().trim();
+>>>>>>> master
         
         if (searchTerm.length < 2) {
             searchResults.style.display = 'none';
             return;
         }
         
+<<<<<<< HEAD
         // Filter clients based on search term
         const filteredClients = allClients.filter(client => 
             client.society.toLowerCase().includes(searchTerm) ||
             client.manager.toLowerCase().includes(searchTerm) ||
             client.fiscalNumber.toLowerCase().includes(searchTerm) ||
             client.phone.toLowerCase().includes(searchTerm)
+=======
+        const filteredClients = allClients.filter(client => 
+            (client.nom && client.nom.toLowerCase().includes(searchTerm)) ||
+            (client.prenom && client.prenom.toLowerCase().includes(searchTerm))
+>>>>>>> master
         );
         
         displaySearchResults(filteredClients);
     });
+<<<<<<< HEAD
     
     // Hide search results when clicking outside
     document.addEventListener('click', function(e) {
@@ -176,12 +227,15 @@ function loadAllClients() {
     } else {
         allClients = defaultClients;
     }
+=======
+>>>>>>> master
 }
 
 function displaySearchResults(clients) {
     const searchResults = document.getElementById('clientSearchResults');
     
     if (clients.length === 0) {
+<<<<<<< HEAD
         searchResults.innerHTML = '<div class="no-results">Aucun client trouvé</div>';
         searchResults.style.display = 'block';
         return;
@@ -264,6 +318,77 @@ function addFormValidation() {
     
     prixTTCInput.addEventListener('input', function() {
         validatePrice(this);
+=======
+        searchResults.style.display = 'none';
+        return;
+    }
+    
+    searchResults.innerHTML = '';
+    clients.forEach(client => {
+        const resultItem = document.createElement('div');
+        resultItem.className = 'search-result-item';
+        resultItem.innerHTML = `
+            <strong>${client.nom} ${client.prenom}</strong><br>
+            <small>${client.telephone} - ${client.location}</small>
+        `;
+        resultItem.addEventListener('click', () => selectClient(client));
+        searchResults.appendChild(resultItem);
+    });
+    
+    searchResults.style.display = 'block';
+}
+
+let selectedClientData = null;
+
+function selectClient(client) {
+    selectedClientData = client;
+    
+    // Update search input
+    document.getElementById('clientSearch').value = `${client.nom} ${client.prenom}`;
+    
+    // Hide search results
+    document.getElementById('clientSearchResults').style.display = 'none';
+    
+    // Show selected client info
+    const selectedClient = document.getElementById('selectedClient');
+    if (selectedClient) {
+        selectedClient.innerHTML = `
+            <div class="client-info">
+                <h4>${client.nom} ${client.prenom}</h4>
+                <p><i class="fas fa-phone"></i> ${client.telephone}</p>
+                <p><i class="fas fa-map-marker-alt"></i> ${client.location}</p>
+            </div>
+        `;
+        selectedClient.style.display = 'block';
+    }
+    
+    // Add hidden input for clientId
+    let clientIdInput = document.getElementById('selectedClientId');
+    if (!clientIdInput) {
+        clientIdInput = document.createElement('input');
+        clientIdInput.type = 'hidden';
+        clientIdInput.id = 'selectedClientId';
+        clientIdInput.name = 'clientId';
+        document.getElementById('addMachineForm').appendChild(clientIdInput);
+    }
+    clientIdInput.value = client.id;
+}
+
+function populateClientSelect() {
+    const clientSelect = document.getElementById('clientId');
+    if (!clientSelect) {
+        // If there's no clientId select, create client search functionality
+        return;
+    }
+    
+    clientSelect.innerHTML = '<option value="">Sélectionner un client</option>';
+    
+    allClients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.id;
+        option.textContent = `${client.nom} ${client.prenom}`;
+        clientSelect.appendChild(option);
+>>>>>>> master
     });
 }
 
@@ -288,6 +413,7 @@ function validateField(field) {
     return true;
 }
 
+<<<<<<< HEAD
 function validateSerialNumber(serialField) {
     const serial = serialField.value.trim();
     
@@ -314,6 +440,8 @@ function validatePrice(priceField) {
     return true;
 }
 
+=======
+>>>>>>> master
 function showFieldError(field, message) {
     const fieldContainer = field.closest('.form-group');
     
@@ -327,6 +455,7 @@ function showFieldError(field, message) {
     fieldContainer.appendChild(errorDiv);
 }
 
+<<<<<<< HEAD
 function calculateTTC() {
     const prixHT = parseFloat(document.getElementById('prixHT').value);
     const prixTTCField = document.getElementById('prixTTC');
@@ -363,6 +492,27 @@ function validateForm() {
         isValid = false;
     }
     
+=======
+function validateForm() {
+    const form = document.getElementById('addMachineForm');
+    const requiredFields = form.querySelectorAll('input[required], select[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            showFieldError(field, 'Ce champ est obligatoire');
+            isValid = false;
+        } else {
+            // Remove error styling if field is now valid
+            field.classList.remove('error');
+            const existingError = field.closest('.form-group').querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+    });
+    
+>>>>>>> master
     return isValid;
 }
 
@@ -372,6 +522,7 @@ function handleFormSubmission() {
         return;
     }
     
+<<<<<<< HEAD
     // Show preview modal
     previewMachine();
 }
@@ -405,6 +556,10 @@ function previewMachine() {
     
     // Show preview modal
     document.getElementById('previewModal').style.display = 'flex';
+=======
+    const formData = getFormData();
+    saveMachine(formData);
+>>>>>>> master
 }
 
 function getFormData() {
@@ -419,6 +574,7 @@ function getFormData() {
     return data;
 }
 
+<<<<<<< HEAD
 function closePreviewModal() {
     document.getElementById('previewModal').style.display = 'none';
 }
@@ -518,14 +674,74 @@ function addAnotherMachine() {
 
 function goToMachinesList() {
     window.location.href = 'voir-machines.html';
+=======
+async function saveMachine(machineData) {
+    try {
+        showNotification('Enregistrement en cours...', 'info');
+        
+        // Format data for API - map HTML form fields to API fields
+        const apiData = {
+            serialNumber: machineData.serialNumber,
+            machineType: machineData.machineType,
+            marque: machineData.marque || '',
+            modele: machineData.modele || '',
+            puissance: machineData.puissance || '',
+            status: machineData.machineStatus || 'actif', // HTML uses machineStatus
+            clientId: machineData.clientId || '',
+            prixHT: parseFloat(machineData.prixHT) || 0,
+            prixTTC: parseFloat(machineData.prixTTC) || 0
+        };
+        
+        const response = await fetch('/api/machines', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(apiData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Erreur lors de l\'enregistrement');
+        }
+        
+        const result = await response.json();
+        console.log('Machine enregistrée:', result);
+        
+        showNotification('Machine ajoutée avec succès!', 'success');
+        resetForm();
+        
+    } catch (error) {
+        console.error('Erreur:', error);
+        showNotification(`Erreur: ${error.message}`, 'error');
+    }
+>>>>>>> master
 }
 
 function resetForm() {
     const form = document.getElementById('addMachineForm');
     form.reset();
     
+<<<<<<< HEAD
     // Clear selected client
     clearSelectedClient();
+=======
+    // Clear client selection
+    selectedClientData = null;
+    document.getElementById('clientSearch').value = '';
+    document.getElementById('clientSearchResults').style.display = 'none';
+    
+    const selectedClient = document.getElementById('selectedClient');
+    if (selectedClient) {
+        selectedClient.style.display = 'none';
+    }
+    
+    // Remove hidden clientId input
+    const clientIdInput = document.getElementById('selectedClientId');
+    if (clientIdInput) {
+        clientIdInput.remove();
+    }
+>>>>>>> master
     
     // Clear all error messages and styling
     const errorMessages = form.querySelectorAll('.error-message');
@@ -534,6 +750,7 @@ function resetForm() {
     const errorFields = form.querySelectorAll('.error');
     errorFields.forEach(field => field.classList.remove('error'));
     
+<<<<<<< HEAD
     // Focus on client search
     document.getElementById('clientSearch').focus();
 }
@@ -542,6 +759,10 @@ function cancelAddMachine() {
     if (confirm('Êtes-vous sûr de vouloir annuler ? Toutes les données saisies seront perdues.')) {
         window.location.href = 'voir-machines.html';
     }
+=======
+    // Focus on first input
+    document.getElementById('serialNumber').focus();
+>>>>>>> master
 }
 
 function showNotification(message, type = 'info') {
@@ -565,6 +786,7 @@ function showNotification(message, type = 'info') {
     }, 5000);
 }
 
+<<<<<<< HEAD
 // Close modal when clicking outside
 window.addEventListener('click', function(event) {
     const previewModal = document.getElementById('previewModal');
@@ -593,3 +815,40 @@ document.addEventListener('keydown', function(event) {
         handleFormSubmission();
     }
 });
+=======
+// Modal and navigation functions for HTML compatibility
+function previewMachine() {
+    // Simple preview - just validate and save directly
+    handleFormSubmission();
+}
+
+function closePreviewModal() {
+    // Not needed in simplified version
+}
+
+function confirmAddMachine() {
+    // Not needed in simplified version - save happens directly
+}
+
+function closeSuccessModal() {
+    // Reset form after successful save
+    resetForm();
+}
+
+function addAnotherMachine() {
+    // Reset form to add another machine
+    resetForm();
+    showNotification('Prêt à ajouter une nouvelle machine', 'info');
+}
+
+function goToMachinesList() {
+    // Navigate to machines list
+    window.location.href = 'voir-machines.html';
+}
+
+function cancelAddMachine() {
+    if (confirm('Êtes-vous sûr de vouloir annuler ? Toutes les données saisies seront perdues.')) {
+        window.location.href = 'dashboard.html';
+    }
+}
+>>>>>>> master

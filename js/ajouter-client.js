@@ -43,6 +43,7 @@ function initializeForm() {
 }
 
 function addFormValidation() {
+<<<<<<< HEAD
     // Phone number validation
     const phoneInput = document.getElementById('phone');
     phoneInput.addEventListener('input', function() {
@@ -59,6 +60,16 @@ function addFormValidation() {
     const fiscalInput = document.getElementById('fiscalNumber');
     fiscalInput.addEventListener('input', function() {
         validateFiscalNumber(this);
+=======
+    // Simple validation only for required fields
+    const form = document.getElementById('addClientForm');
+    const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+    
+    requiredFields.forEach(field => {
+        field.addEventListener('blur', function() {
+            validateField(this);
+        });
+>>>>>>> master
     });
 }
 
@@ -80,6 +91,7 @@ function validateField(field) {
         return false;
     }
     
+<<<<<<< HEAD
     // Field-specific validation
     if (field.type === 'email' && field.value.trim()) {
         return validateEmail(field);
@@ -133,6 +145,8 @@ function validateFiscalNumber(fiscalField) {
         return false;
     }
     
+=======
+>>>>>>> master
     return true;
 }
 
@@ -154,9 +168,24 @@ function validateForm() {
     const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
     let isValid = true;
     
+<<<<<<< HEAD
     requiredFields.forEach(field => {
         if (!validateField(field)) {
             isValid = false;
+=======
+    // Basic required field validation only
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            showFieldError(field, 'Ce champ est obligatoire');
+            isValid = false;
+        } else {
+            // Remove error styling if field is now valid
+            field.classList.remove('error');
+            const existingError = field.closest('.form-group').querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+>>>>>>> master
         }
     });
     
@@ -182,6 +211,7 @@ function previewClient() {
     // Get form data
     const formData = getFormData();
     
+<<<<<<< HEAD
     // Populate preview modal
     document.getElementById('previewSociety').textContent = formData.society || '-';
     document.getElementById('previewManager').textContent = formData.manager || '-';
@@ -194,6 +224,15 @@ function previewClient() {
     document.getElementById('previewPaymentMode').textContent = formData.paymentMode || '-';
     document.getElementById('previewPaymentStatus').textContent = formData.paymentStatus || '-';
     document.getElementById('previewNotes').textContent = formData.notes || 'Aucune note';
+=======
+    // Populate preview modal with essential fields only
+    document.getElementById('previewSociety').textContent = formData.society || '-';
+    document.getElementById('previewManager').textContent = formData.manager || '-';
+    document.getElementById('previewType').textContent = formData.clientType || '-';
+    document.getElementById('previewPhone').textContent = formData.phone || '-';
+    document.getElementById('previewAddress').textContent = formData.address || '-';
+    document.getElementById('previewLocation').textContent = formData.location || '-';
+>>>>>>> master
     
     // Show preview modal
     document.getElementById('previewModal').style.display = 'flex';
@@ -228,6 +267,7 @@ function confirmAddClient() {
     document.getElementById('successModal').style.display = 'flex';
 }
 
+<<<<<<< HEAD
 function saveClient(clientData) {
     // Generate a unique ID
     const clientId = Date.now();
@@ -265,6 +305,48 @@ function saveClient(clientData) {
     
     // Show success notification
     showNotification('Client ajouté avec succès!', 'success');
+=======
+async function saveClient(clientData) {
+    try {
+        // Show loading state
+        showNotification('Enregistrement en cours...', 'info');
+        
+        // Format data for API (simplified)
+        const apiData = {
+            nom: clientData.society,
+            prenom: clientData.manager,
+            telephone: clientData.phone,
+            adresse: clientData.address,
+            type: clientData.clientType,
+            location: clientData.location,
+            status: clientData.status
+        };
+        
+        // Send to backend API
+        const response = await fetch('/api/clients', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(apiData)
+        });
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Erreur lors de l\'enregistrement');
+        }
+        
+        const result = await response.json();
+        console.log('Client enregistré:', result);
+        
+        // Show success notification
+        showNotification('Client ajouté avec succès!', 'success');
+        
+    } catch (error) {
+        console.error('Erreur:', error);
+        showNotification(`Erreur: ${error.message}`, 'error');
+    }
+>>>>>>> master
 }
 
 function closeSuccessModal() {
@@ -356,6 +438,7 @@ document.addEventListener('keydown', function(event) {
         handleFormSubmission();
     }
 });
+<<<<<<< HEAD
 
 
 
@@ -398,3 +481,5 @@ function saveClient(clientData) {
     // Show success notification
     showNotification('Client ajouté avec succès!', 'success');
 }
+=======
+>>>>>>> master

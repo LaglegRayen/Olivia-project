@@ -23,6 +23,7 @@ function checkAuthentication() {
 
 let allClients = [];
 
+<<<<<<< HEAD
 function loadClientsData() {
     // Load existing clients from localStorage first
     const savedClients = JSON.parse(localStorage.getItem('oliviaClients') || '[]');
@@ -180,6 +181,22 @@ function loadClientsData() {
         allClients = combinedClients;
     } else {
         allClients = defaultClients;
+=======
+async function loadClientsData() {
+    try {
+        // Load clients from API
+        const response = await fetch('/api/clients');
+        if (response.ok) {
+            const result = await response.json();
+            allClients = result.data || [];
+        } else {
+            console.error('Failed to load clients from API');
+            allClients = [];
+        }
+    } catch (error) {
+        console.error('Error loading clients:', error);
+        allClients = [];
+>>>>>>> master
     }
     
     displayClients(allClients);
@@ -194,6 +211,7 @@ function displayClients(clients) {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>
+<<<<<<< HEAD
                 <strong>${client.society}</strong><br>
                 <small style="color: #65676b;">${client.fiscalNumber}</small>
             </td>
@@ -207,6 +225,23 @@ function displayClients(clients) {
                 <button class="btn btn-primary btn-small" onclick="viewClient(${client.id})">
                     <i class="fas fa-eye"></i> Voir
                 </button>
+=======
+                <strong>${client.nom || '-'}</strong><br>
+                <small style="color: #65676b;">${client.prenom || '-'}</small>
+            </td>
+            <td>${client.prenom || '-'}</td>
+            <td>${client.telephone || '-'}</td>
+            <td>${client.adresse || '-'}</td>
+            <td>${client.location || '-'}</td>
+            <td><span class="status-badge ${getTypeClass(client.type)}">${client.type || '-'}</span></td>
+            <td>
+                <button class="btn btn-primary btn-small" onclick="viewClient('${client.id}')">
+                    <i class="fas fa-eye"></i> Voir
+                </button>
+                <button class="btn btn-danger btn-small" onclick="deleteClient('${client.id}')">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+>>>>>>> master
             </td>
         `;
         tbody.appendChild(row);
@@ -232,6 +267,7 @@ function updateClientCount(count) {
 
 function initializeSearch() {
     const searchInput = document.getElementById('clientSearch');
+<<<<<<< HEAD
     const statusFilter = document.getElementById('statusFilter');
     const typeFilter = document.getElementById('typeFilter');
     const locationFilter = document.getElementById('locationFilter');
@@ -240,6 +276,12 @@ function initializeSearch() {
     statusFilter.addEventListener('change', filterClients);
     typeFilter.addEventListener('change', filterClients);
     locationFilter.addEventListener('change', filterClients);
+=======
+    
+    if (searchInput) {
+        searchInput.addEventListener('input', filterClients);
+    }
+>>>>>>> master
 }
 
 function searchClients() {
@@ -248,6 +290,7 @@ function searchClients() {
 
 function filterClients() {
     const searchTerm = document.getElementById('clientSearch').value.toLowerCase();
+<<<<<<< HEAD
     const statusFilter = document.getElementById('statusFilter').value;
     const typeFilter = document.getElementById('typeFilter').value;
     const locationFilter = document.getElementById('locationFilter').value;
@@ -264,6 +307,19 @@ function filterClients() {
         const matchesLocation = !locationFilter || client.location.toLowerCase() === locationFilter;
         
         return matchesSearch && matchesStatus && matchesType && matchesLocation;
+=======
+    
+    if (!searchTerm) {
+        displayClients(allClients);
+        updateClientCount(allClients.length);
+        return;
+    }
+    
+    const filteredClients = allClients.filter(client => {
+        return (client.nom && client.nom.toLowerCase().includes(searchTerm)) ||
+               (client.prenom && client.prenom.toLowerCase().includes(searchTerm)) ||
+               (client.telephone && client.telephone.toLowerCase().includes(searchTerm));
+>>>>>>> master
     });
     
     displayClients(filteredClients);
@@ -321,6 +377,33 @@ function editClient() {
     alert('Fonctionnalité de modification en cours de développement');
 }
 
+<<<<<<< HEAD
+=======
+async function deleteClient(clientId) {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer ce client ?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`/api/clients/${clientId}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            // Reload the clients list
+            loadClientsData();
+            alert('Client supprimé avec succès');
+        } else {
+            const errorData = await response.json();
+            alert(`Erreur: ${errorData.error || 'Impossible de supprimer le client'}`);
+        }
+    } catch (error) {
+        console.error('Error deleting client:', error);
+        alert('Erreur de connexion');
+    }
+}
+
+>>>>>>> master
 function initializeModal() {
     // Close modal when clicking outside
     window.addEventListener('click', function(e) {

@@ -1,13 +1,17 @@
 // Login functionality
 document.addEventListener('DOMContentLoaded', function() {
     const loginForm = document.getElementById('loginForm');
+<<<<<<< HEAD
     const googleLoginBtn = document.querySelector('.btn-google');
     
+=======
+>>>>>>> master
     // Handle form submission
     loginForm.addEventListener('submit', function(e) {
         e.preventDefault();
         handleLogin();
     });
+<<<<<<< HEAD
     
     // Handle Google login
     googleLoginBtn.addEventListener('click', handleGoogleLogin);
@@ -18,10 +22,13 @@ document.addEventListener('DOMContentLoaded', function() {
             handleLogin();
         }
     });
+=======
+>>>>>>> master
 });
 
 function handleLogin() {
     const email = document.getElementById('email').value;
+<<<<<<< HEAD
     const password = document.getElementById('password').value;
     
     // Basic validation
@@ -106,4 +113,38 @@ function showError(message) {
     setTimeout(() => {
         errorDiv.remove();
     }, 5000);
+=======
+    // Basic validation
+    if (!email) {
+        showError('Veuillez entrer votre email');
+        return;
+    }
+    // Show loading state
+    const submitBtn = document.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = 'Connexion...';
+    submitBtn.disabled = true;
+    // Simulate login process
+    setTimeout(() => {
+        // For demo purposes, accept any email
+        localStorage.setItem('user', JSON.stringify({
+            email: email,
+            loginTime: new Date().toISOString()
+        }));
+        // Redirect to dashboard
+        window.location.href = '../html/dashboard.html';
+    }, 800);
+}
+
+
+function showError(message) {
+    // Show error in the dedicated error div
+    const errorDiv = document.getElementById('loginError');
+    if (errorDiv) {
+        errorDiv.textContent = message;
+        setTimeout(() => {
+            errorDiv.textContent = '';
+        }, 4000);
+    }
+>>>>>>> master
 }
